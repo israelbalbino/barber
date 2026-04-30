@@ -15,6 +15,8 @@ datasource db {
 model User{
   id String @id @default(uuid())
   name String
+  avatar String?
+  delete_avatar_url String?
   email String
   client String
   endereco String?
@@ -28,6 +30,19 @@ model User{
   subscriptions Subscription?
   haircuts Haircut[]
   service Service[]
+  notifications Notification[]
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  user_id   String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  @@map("notification")
+  user User @relation(fields: [user_id], references: [id])
 }
 
 model Subscription{
@@ -58,6 +73,7 @@ model Haircut{
 
 model Service{
   id String @id @default(uuid())
+  avatar String 
   customer String
   status Boolean @default(true)
   created_at DateTime? @default(now())

@@ -5,7 +5,7 @@ interface PayLoad{
     sub: string;
 }
 
-export function isAuthenticated(
+ function isAuthenticated(
     request:Request,
     response:Response,
     next:NextFunction
@@ -13,6 +13,8 @@ export function isAuthenticated(
 
     const authToken = request.headers.authorization;
 
+    console.log(authToken)
+   
     if(!authToken){
         return response.status(401).end();
     }
@@ -28,6 +30,8 @@ export function isAuthenticated(
 
         request.user_id = sub;
 
+      
+
         return next();
 
 
@@ -38,4 +42,4 @@ export function isAuthenticated(
 
 }
 
-export default {isAuthenticated }
+export {isAuthenticated }

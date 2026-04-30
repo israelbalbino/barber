@@ -11,6 +11,8 @@ class DetailsUserService{
             select:{
                 id: true,
                 name: true,
+                delete_avatar_url:true,
+                avatar:true,
                 email: true,
                 client:true,
                 endereco:true,

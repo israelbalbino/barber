@@ -8,6 +8,11 @@ class CreateHaircutController{
 
         const user_id = request.user_id;
 
+        console.log({
+            user_id: request.user_id,
+            headers: request.headers.authorization,
+          });
+
         const createHaircut = new CreateHaircutService;
 
         const haircut = await createHaircut.execute({

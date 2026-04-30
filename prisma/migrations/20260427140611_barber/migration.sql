@@ -2,6 +2,8 @@
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "avatar" TEXT,
+    "delete_avatar_url" TEXT,
     "email" TEXT NOT NULL,
     "client" TEXT NOT NULL,
     "endereco" TEXT,

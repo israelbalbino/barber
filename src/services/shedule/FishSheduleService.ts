@@ -25,7 +25,7 @@ class FishSheduleService{
                 throw new Error("Not authorization")
             }
 
-            await prismaClient.service.update({
+           const res = await prismaClient.service.update({
                 where:{
                     id: schedule_id
                 },
@@ -34,7 +34,8 @@ class FishSheduleService{
                 }
             })
 
-            return { message: "Finalizado com sucesso!"}
+
+            return res;
 
 
 

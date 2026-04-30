@@ -1,20 +1,25 @@
 import { Request, Response } from "express";
-import { UpdateUserServide } from "../../services/user/UpdateUserService";
+import { UpdateUserService } from "../../services/user/UpdateUserService";
 
 
 class UpdateUserController{
     async handle(request:Request, response:Response){
 
-        const { name, endereco } = request.body;
+        const { name, endereco, avatar, delete_avatar_url } = request.body;
 
         const user_id = request.user_id;
 
-        const updateUserService = new UpdateUserServide;
+        const updateUserService = new UpdateUserService;
 
         const UserService = await updateUserService.execute({
             user_id,
-            name,endereco
+            name,
+            endereco,
+            avatar,
+            delete_avatar_url
         })
+
+        console.log(UserService)
 
         return response.json(UserService);
 

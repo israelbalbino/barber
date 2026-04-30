@@ -4,13 +4,38 @@ import prismaClient from "../../prisma";
 interface ListscheduleRequest{
     user_id: string;
     status: boolean | string;
+    data: Date | string;
    
 }
 
 class ListScheduleService{
-    async execute({user_id, status} : ListscheduleRequest){
+    async execute({user_id, status, data} : ListscheduleRequest){
 
-      const today = new Date();
+      const today = new Date(data);
+
+      if(!data){
+
+        const listSchedule = await prismaClient.service.findMany({
+          where: {
+            user_id: user_id,
+            
+            status:status === 'true' ? true : false,
+            
+          },
+          take: 4, // 👈 aqui
+orderBy: {
+  created_at: 'asc'
+},
+          select:{
+              id:true,
+              customer:true,
+              status:true,
+              haircut:true
+          }
+        });
+
+        return listSchedule;
+      }
 
       // início do dia
       const startOfDay = new Date(

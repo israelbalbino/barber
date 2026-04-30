@@ -23,6 +23,7 @@ class NewScheduleController{
           const io = request.app.get("io");
 
           io.emit("novo_servico", shedule);
+          io.to(user_id).emit("novo_servico", shedule);
        
 
         return response.json(shedule)

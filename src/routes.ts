@@ -5,7 +5,7 @@ import { DetailsUserController } from './controllers/user/DetailsUserController'
 import { isAuthenticated } from './middlewares/isAuthenticated';
 import { UpdateUserController } from './controllers/user/UpdateUserController';
 import { CreateHaircutController } from './controllers/haircut/CreateHaircutController';
-import { ListHaircutController } from './controllers/haircut/ListHaircutController';
+import { ListHaircutsController } from './controllers/haircut/ListHaircutController';
 import { UpdateHaircutController } from './controllers/haircut/UpdateHaircutController';
 import { CheckSubscriptionController } from './controllers/haircut/CheckSubscriptionController';
 import { CountHaircutsController } from './controllers/haircut/CountHaircutsController';
@@ -30,6 +30,11 @@ import { ListClientController } from './controllers/haircut/listClientController
 import { NewClientController } from './controllers/shedule/NewClientController';
 import { UsersServiceController } from './controllers/shedule/UsersServiceController';
 import { FishBtnEspController } from './controllers/shedule/FishBtnEspController';
+import { ListNotificationController } from './controllers/notification/ListNotificationController';
+import { ReadNotificationController } from './controllers/notification/ReadNotificationController';
+import { CreateNotificationController } from './controllers/notification/CreateNotificationController';
+import { CountNotificationController } from './controllers/notification/CountNotificationController';
+import { ListServiceUserController } from './controllers/shedule/ListServiceUserController';
 
 
 
@@ -59,6 +64,9 @@ router.get('/list/users',isAuthenticated, new ListUserController().handle)
 //lista somente os serviços de acordo com o user_id do usuario
 router.get('/list/user',isAuthenticated, new ListServiceController().handle)
 
+//lista todos serviços co o user_id
+router.get('/list/service',isAuthenticated, new ListServiceUserController().handle)
+
 
 
 
@@ -68,13 +76,20 @@ router.get('/list/user',isAuthenticated, new ListServiceController().handle)
 //----ROTAS HAIRCUT--//
 
 //cadastrar modelos de cortes
-router.post('/haircut',isAuthenticated, new CreateHaircutController().handle)
-router.get('/haircuts', isAuthenticated, new ListHaircutController().handle)
+router.post('/haircut', isAuthenticated, new CreateHaircutController().handle)
+router.get("/haircuts", isAuthenticated, new ListHaircutsController().handle)
 router.put('/haircut', isAuthenticated, new UpdateHaircutController().handle)
 router.get('/haircut/check', isAuthenticated, new CheckSubscriptionController().handle)
 router.get('/haircut/count',isAuthenticated, new CountHaircutsController().handle)
 router.get('/haircut/details', isAuthenticated, new DetailsHaircutsController().handle)
 
+
+
+//notification-rotas
+router.get('/notifications', isAuthenticated, new ListNotificationController().handle)
+router.post('/notification/read', isAuthenticated, new ReadNotificationController().handle)
+router.post("/notification/new", isAuthenticated, new CreateNotificationController().handle)
+router.get("/notification/count", isAuthenticated, new CountNotificationController().handle)
 
 router.get('/haircut/client', isAuthenticated, new ListClientController().handle)
 

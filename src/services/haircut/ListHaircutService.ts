@@ -1,23 +1,53 @@
-import prismaClient from "../../prisma";
+import prisma from "../../prisma";
 
-interface HaircurRequest{
-    user_id: string;
-    status: boolean | string;
+interface RequestProps {
+  status?: boolean;
+  page?: number;
+  limit?: number;
+  user_id: string;
 }
 
-class ListHaircutService{
-    async execute({user_id, status}: HaircurRequest){
 
-        const haircut = await prismaClient.haircut.findMany({
-            where:{
-                user_id:user_id,
-                status:status === 'true' ? true : false
-            }
-        })
 
-        return haircut;
+ class ListHaircutsService {
+  async execute({ status, page = 1, limit = 4, user_id }: RequestProps) {
+    const limitNumber = Math.min(Math.max(limit, 1), 20);
+    const pageNumber = Math.max(page, 1);
 
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // 🔥 monta o where corretamente (sem status inicialmente)
+    const where: any = {
+      user_id,
+    };
+
+    // 🔥 só adiciona status se existir
+    if (status !== undefined) {
+      where.status = status;
     }
+
+    // 🔥 paralelo (performance)
+    const [haircuts, total] = await Promise.all([
+      prisma.haircut.findMany({
+        where,
+        skip,
+        take: limitNumber,
+        orderBy: {
+          created_at: "desc",
+        },
+      }),
+      prisma.haircut.count({ where }),
+    ]);
+
+    const hasMore = skip + haircuts.length < total;
+
+    return {
+      data: haircuts,
+      hasMore,
+      page: pageNumber,
+      total,
+    };
+  }
 }
 
-export { ListHaircutService }
+export {ListHaircutsService}

@@ -26,6 +26,8 @@ class ListUserService{
             select:{
                 id:true,
                 name:true,
+                avatar:true,
+                created_at:true,
                 client:true,
                 endereco:true,
                 subscriptions:true

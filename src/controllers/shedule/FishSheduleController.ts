@@ -20,6 +20,8 @@ class FishSheduleController{
 
          io.emit("servicos_atualizados");
 
+         io.to(user_id).emit("servicos_atualizados");
+
         return response.json(fish)
 
     }

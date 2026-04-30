@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
-import { ListScheduleService } from "../../services/shedule/ListScheduleService";
+import { ListServiceUserService } from "../../services/shedule/ListServiceUserService";
 
-class ListScheduleController{
+class ListServiceUserController{
     
     async handle(request:Request, response:Response){
 
         const user_id = request.user_id;
+        const barbeid = request.query.barbeid as string;
         const status = request.query.status as string;
-        const data = request.query.data as string;
+        
         
 
 
@@ -15,13 +16,13 @@ class ListScheduleController{
         console.log(status)
        
 
-        const listSchedules = new ListScheduleService;
+        const listSchedules = new ListServiceUserService;
 
         const shedule = await listSchedules.execute({
             user_id, 
-            status,
-            data
-         
+            barbeid,
+            status
+
         })
 
       
@@ -31,4 +32,4 @@ class ListScheduleController{
     }
 }
 
-export { ListScheduleController }
+export { ListServiceUserController }

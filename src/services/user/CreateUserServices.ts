@@ -6,12 +6,13 @@ interface UserRequest{
     email: string;
     password: string;
     client: string;
+    avatar: string;
 }
 
 
 class CreateUserServices{
 
-    async execute({ name, email, password, client }: UserRequest){
+    async execute({ name, avatar, email, password, client }: UserRequest){
 
         
         //verifica se o email foi passado no corpo da requisição,se não foi exibie uma mensagem de erro
@@ -42,15 +43,21 @@ class CreateUserServices{
         const user = await prismaClient.user.create({
             data:{
                 name: name,
+                avatar: avatar,
                 email:email,
                 password: await passwordHash,
-                client: client
+                client: client,
+                
+                
             },
             select:{
                 id: true,
+                avatar: true,
                 name: true,
                 email: true,
-                client: true
+                client: true,
+               
+               
             }
         })
 
