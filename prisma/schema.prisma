@@ -17,11 +17,14 @@ model User{
   name String
   avatar String?
   delete_avatar_url String?
-  email String
+  email String @unique
   client String
   endereco String?
   password String
   stripe_customer_id String?
+
+  resetToken       String?
+  resetTokenExpiry DateTime?
 
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())

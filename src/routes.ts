@@ -35,6 +35,9 @@ import { ReadNotificationController } from './controllers/notification/ReadNotif
 import { CreateNotificationController } from './controllers/notification/CreateNotificationController';
 import { CountNotificationController } from './controllers/notification/CountNotificationController';
 import { ListServiceUserController } from './controllers/shedule/ListServiceUserController';
+import { ForgotPasswordController } from './controllers/user/ForgotPasswordController';
+import { ResetPasswordController } from './controllers/user/ResetPasswordController';
+import { VerifyCodeController } from './controllers/user/VerifyCodeController';
 
 
 
@@ -45,6 +48,13 @@ const router = Router();
 
 //cadastrar usuarios
 router.post('/users', new CreateUserController().handle)
+
+//recuperar senha
+router.post("/forgot-password", new ForgotPasswordController().handle);
+router.post("/reset-password", new ResetPasswordController().handle);
+router.post("/verify-reset-code", new VerifyCodeController().handle);
+
+
 //logar usuario
 router.post('/session', new AuthUserController().handle)
 //datalhes do usuario
