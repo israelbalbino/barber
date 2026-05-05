@@ -8,15 +8,21 @@ class NewScheduleController{
 
     async handle(request:Request, response:Response){
 
-        const { haircut_id, customer } = request.body;
+        const { haircut_id, customer, avatar } = request.body;
         const user_id = request.user_id;
+
+        const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(customer)}&background=D4AF37&color=000`;
+
+        const finalAvatar = avatar && avatar !== "" ? avatar : defaultAvatar;
+
 
         const newShedule = new NewScheduleService;
 
         const shedule = await newShedule.execute({
             user_id,
             haircut_id,
-            customer
+            customer,
+            avatar:finalAvatar
         })
 
           // 🔥 dispara atualização em tempo real
