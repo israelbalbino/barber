@@ -4,10 +4,11 @@ interface NewScheduleServiceRequest{
     user_id: string;
     haircut_id: string;
     customer: string;
+    avatar: string;
 }
 
 class NewClientService{
-    async execute({ user_id, haircut_id, customer }: NewScheduleServiceRequest){
+    async execute({ user_id, haircut_id, customer, avatar}: NewScheduleServiceRequest){
       
         if(customer === '' || haircut_id === ''){
             throw new Error("Error shedule new service")
@@ -17,7 +18,8 @@ class NewClientService{
            data:{
             customer,
             haircut_id,
-            user_id
+            user_id,
+            avatar
            }
         })
 
