@@ -13,7 +13,7 @@ class AuthUserService{
 
     async execute({ email,password }:AuthUserRequest){
 
-        const user = await prismaClient.user.findFirst({
+        const user = await prismaClient.user.findUnique({
             where:{
                 email:email
             },
@@ -34,17 +34,18 @@ class AuthUserService{
 
         //GERAR UM TOKEN JWT
 
-        const token = sign({
-            name: user.name,
-            email: user.email,
-        },
-        process.env.JWT_SECRET,
-        {
-            subject: user.id,
-            expiresIn: '30d'
-        }
-    
-    )
+        const token = sign(
+            {
+              sub: user.id,
+              name: user.name,
+              email: user.email,
+              jti: crypto.randomUUID(), // 🔥 nível enterprise
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: '30d',
+            }
+          )
 
 
 

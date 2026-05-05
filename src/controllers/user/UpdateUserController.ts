@@ -19,7 +19,7 @@ class UpdateUserController{
             delete_avatar_url
         })
 
-        console.log(UserService)
+        console.log(user_id)
 
         return response.json(UserService);
 
