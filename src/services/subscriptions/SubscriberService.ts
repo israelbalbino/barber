@@ -61,7 +61,7 @@ class SubscriberService {
 
       line_items: [
         {
-          price: process.env.STRIPE_PRICE,
+          price: `${process.env.STRIPE_PRICE}`,
           quantity: 1,
         },
       ],

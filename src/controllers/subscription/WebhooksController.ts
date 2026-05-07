@@ -10,7 +10,7 @@ class WebhooksController {
 
     const signature = request.headers['stripe-signature']
 
-    let endpointSecret = 'whsec_ea6699d2dd1f09652be0ed97ce09d45ee39e18ba4ef24fc7f9d78b38d6e26507';
+    let endpointSecret = 'whsec_uudoJSjfF6ZzYgHcXPlysn14gEa4eK6z';
    
     try{
       event = stripe.webhooks.constructEvent(request.body, signature, endpointSecret)
