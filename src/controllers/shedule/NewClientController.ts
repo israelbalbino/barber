@@ -12,7 +12,8 @@ class NewClientController{
        
         const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(customer)}&background=D4AF37&color=000`;
 
-        const finalAvatar = avatar && avatar !== "" ? avatar : defaultAvatar;
+
+        console.log(avatar)
 
         const newShedule = new NewClientService;
 
@@ -20,7 +21,7 @@ class NewClientController{
             user_id,
             haircut_id,
             customer,
-            avatar:finalAvatar
+            avatar:avatar.avatar && avatar.avatar !== "" ? avatar.avatar : defaultAvatar
         })
 
           // 🔥 dispara atualização em tempo real

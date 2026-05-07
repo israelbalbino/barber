@@ -7,6 +7,7 @@ interface ListscheduleRequest{
     user_id: string;
     status: boolean | string;
     barbeid:string;
+
  
    
 }
@@ -32,7 +33,8 @@ class ListServiceUserService{
                 created_at:true,
                 customer:true,
                 status:true,
-                haircut:true
+                haircut:true,
+                avatar:true
             }
           });
 

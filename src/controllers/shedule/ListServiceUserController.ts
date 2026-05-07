@@ -10,10 +10,6 @@ class ListServiceUserController{
         const status = request.query.status as string;
         
         
-
-
-
-        console.log(status)
        
 
         const listSchedules = new ListServiceUserService;
