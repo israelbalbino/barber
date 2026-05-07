@@ -21,6 +21,15 @@ class SubscriberService {
 
     let customerId = findUser.stripe_customer_id;
 
+    // 🔥 valida customer
+if (customerId) {
+  try {
+    await stripe.customers.retrieve(customerId);
+  } catch {
+    customerId = null;
+  }
+}
+
     // 🔥 CRIAR CUSTOMER NO STRIPE SE NÃO EXISTIR
     if (!customerId) {
       const stripeCustomer = await stripe.customers.create({
