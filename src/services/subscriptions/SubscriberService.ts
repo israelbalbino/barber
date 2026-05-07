@@ -62,6 +62,8 @@ if (customerId) {
       ? process.env.STRIPE_CANCEL_CLIENT_URL
       : process.env.STRIPE_CANCEL_BARBER_URL;
 
+    const price_client = isCliente ? process.env.STRIPE_PRICE_CLIENT : process.env.STRIPE_PRICE_BARBER
+
     // 🔥 CRIAR SESSÃO DE PAGAMENTO
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -70,7 +72,7 @@ if (customerId) {
 
       line_items: [
         {
-          price: `${process.env.STRIPE_PRICE}`,
+          price: price_client,
           quantity: 1,
         },
       ],
