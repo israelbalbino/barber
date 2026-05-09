@@ -29,6 +29,7 @@ class DadosGraficService {
           gte: firstDay,
           lte: lastDay,
         },
+        status:false
       },
       select: {
         haircut: true,
