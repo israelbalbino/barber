@@ -1,3 +1,4 @@
+
 import Stripe from "stripe";
 import prismaClient from "../../prisma";
 
@@ -7,68 +8,90 @@ interface SubscribeRequest {
 
 class SubscriberService {
   async execute({ user_id }: SubscribeRequest) {
-    const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
 
-    const findUser = await prismaClient.user.findFirst({
+    const stripe = new Stripe(
+      process.env.STRIPE_API_KEY as string
+    );
+
+    const user = await prismaClient.user.findFirst({
       where: {
         id: user_id,
       },
     });
 
-    if (!findUser) {
+    if (!user) {
       throw new Error("Usuário não encontrado");
     }
 
-    let customerId = findUser.stripe_customer_id;
+    let customerId = user.stripe_customer_id;
 
-    // 🔥 valida customer
-if (customerId) {
-  try {
-    await stripe.customers.retrieve(customerId);
-  } catch {
-    customerId = null;
-  }
-}
+    // 🔥 VALIDAR CUSTOMER
+    if (customerId) {
+      try {
 
-    // 🔥 CRIAR CUSTOMER NO STRIPE SE NÃO EXISTIR
+        const customer = await stripe.customers.retrieve(customerId);
+
+        // 🔥 customer deletado
+        if ((customer as any).deleted) {
+          customerId = null;
+        }
+
+      } catch (err) {
+
+        console.log("CUSTOMER INVÁLIDO");
+
+        customerId = null;
+      }
+    }
+
+    // 🔥 CRIAR CUSTOMER NOVO
     if (!customerId) {
-      const stripeCustomer = await stripe.customers.create({
-        email: findUser.email,
-      });
 
-      await prismaClient.user.update({
-        where: {
-          id: user_id,
-        },
-        data: {
-          stripe_customer_id: stripeCustomer.id,
-        },
+      const stripeCustomer = await stripe.customers.create({
+        email: user.email,
+        name: user.name,
       });
 
       customerId = stripeCustomer.id;
+
+      // 🔥 salva customer novo
+      await prismaClient.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          stripe_customer_id: customerId,
+        },
+      });
+
+      console.log("NOVO CUSTOMER:", customerId);
     }
 
-    // 🔥 IDENTIFICAR TIPO DE USUÁRIO
-    const tipo = findUser.client?.toLowerCase();
+    // 🔥 URLS
+    const tipo = user.client?.toLowerCase();
 
     const isCliente = tipo === "cliente";
 
-    // 🔥 DEFINIR URL DINÂMICA
+    const price_client = isCliente ? process.env.STRIPE_PRICE_CLIENT! : process.env.STRIPE_PRICE_BARBER!
+
+
     const success_url = isCliente
-      ? process.env.STRIPE_SUCCESS_CLIENT_URL
-      : process.env.STRIPE_SUCCESS_BARBER_URL;
+      ? process.env.STRIPE_SUCCESS_CLIENT_URL!
+      : process.env.STRIPE_SUCCESS_BARBER_URL!;
 
     const cancel_url = isCliente
-      ? process.env.STRIPE_CANCEL_CLIENT_URL
-      : process.env.STRIPE_CANCEL_BARBER_URL;
+      ? process.env.STRIPE_CANCEL_CLIENT_URL!
+      : process.env.STRIPE_CANCEL_BARBER_URL!;
 
-    const price_client = isCliente ? process.env.STRIPE_PRICE_CLIENT : process.env.STRIPE_PRICE_BARBER
-
-    // 🔥 CRIAR SESSÃO DE PAGAMENTO
-    const stripeCheckoutSession = await stripe.checkout.sessions.create({
+    // 🔥 CHECKOUT
+    const session = await stripe.checkout.sessions.create({
       customer: customerId,
+
       payment_method_types: ["card"],
+
       billing_address_collection: "required",
+
+      mode: "subscription",
 
       line_items: [
         {
@@ -77,16 +100,15 @@ if (customerId) {
         },
       ],
 
-      mode: "subscription",
       allow_promotion_codes: true,
 
-      success_url: success_url,
-      cancel_url: cancel_url,
+      success_url,
+      cancel_url,
     });
 
-    console.log("Checkout URL:", stripeCheckoutSession.url);
-
-    return { url: stripeCheckoutSession.url };
+    return {
+      url: session.url,
+    };
   }
 }
 
