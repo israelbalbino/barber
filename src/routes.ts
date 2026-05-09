@@ -38,6 +38,7 @@ import { ListServiceUserController } from './controllers/shedule/ListServiceUser
 import { ForgotPasswordController } from './controllers/user/ForgotPasswordController';
 import { ResetPasswordController } from './controllers/user/ResetPasswordController';
 import { VerifyCodeController } from './controllers/user/VerifyCodeController';
+import { DadosController } from './controllers/shedule/DadosController';
 
 
 
@@ -145,6 +146,12 @@ router.get('/service/count/mes',isAuthenticated, new CountMesController().handle
 router.post('/subscribe', isAuthenticated, new SubscriberController().handle)
 router.post('/webhooks', express.raw({ type: 'application/json'}), new WebhooksController().handle)
 router.post('/create-portal', isAuthenticated, new CreatePortalController().handle)
+
+router.get(
+    "/dashboard/grafico-dados",
+    isAuthenticated,
+    new DadosController().handle
+  );
 
 
 //--pdf
