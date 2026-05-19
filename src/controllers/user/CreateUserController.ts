@@ -6,7 +6,7 @@ class CreateUserController{
 
     async handle( request:Request, response:Response ) {
 
-        const {name, avatar, email, password,client } = request.body;
+        const {name, avatar, email, password,client, telefone } = request.body;
 
         const createUserService = new CreateUserServices();
 
@@ -14,6 +14,7 @@ class CreateUserController{
             name,
             avatar,
             email,
+            telefone,
             password,
             client
         })

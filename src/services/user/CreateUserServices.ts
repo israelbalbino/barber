@@ -5,6 +5,7 @@ interface UserRequest{
     name: string;
     email: string;
     password: string;
+    telefone: string;
     client: string;
     avatar: string;
 }
@@ -12,7 +13,7 @@ interface UserRequest{
 
 class CreateUserServices{
 
-    async execute({ name, avatar, email, password, client }: UserRequest){
+    async execute({ name, avatar, email,telefone, password, client  }: UserRequest){
 
         
         //verifica se o email foi passado no corpo da requisição,se não foi exibie uma mensagem de erro
@@ -45,6 +46,7 @@ class CreateUserServices{
                 name: name,
                 avatar: avatar,
                 email:email,
+                telefone:telefone,
                 password: await passwordHash,
                 client: client,
                 
@@ -54,6 +56,7 @@ class CreateUserServices{
                 id: true,
                 avatar: true,
                 name: true,
+                telefone: true,
                 email: true,
                 client: true,
                
