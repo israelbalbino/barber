@@ -11,6 +11,8 @@ class NewScheduleController{
         const { haircut_id, customer, avatar } = request.body;
         const user_id = request.user_id;
 
+        console.log(user_id)
+
         const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(customer)}&background=D4AF37&color=000`;
 
         const finalAvatar = avatar && avatar !== "" ? avatar : defaultAvatar;
@@ -28,7 +30,7 @@ class NewScheduleController{
           // 🔥 dispara atualização em tempo real
           const io = request.app.get("io");
 
-          io.emit("novo_servico", shedule);
+         
           io.to(user_id).emit("novo_servico", shedule);
        
 
