@@ -39,6 +39,8 @@ import { ForgotPasswordController } from './controllers/user/ForgotPasswordContr
 import { ResetPasswordController } from './controllers/user/ResetPasswordController';
 import { VerifyCodeController } from './controllers/user/VerifyCodeController';
 import { DadosController } from './controllers/shedule/DadosController';
+import { CreateBusinessHoursController } from './controllers/businessHours/CreateBusinessHoursController';
+import { ListBusinessHoursController } from './controllers/businessHours/ListBusinessHoursController';
 
 
 
@@ -156,6 +158,14 @@ router.get(
 
 //--pdf
 router.get('/report', isAuthenticated, new GenerateReportController().handle);
+
+
+//--Adicinar horarios e dias
+
+router.post('/busineshours', isAuthenticated, new CreateBusinessHoursController().handle)
+
+router.get('/busineshours/list', isAuthenticated, new ListBusinessHoursController().handle)
+
 
 
 

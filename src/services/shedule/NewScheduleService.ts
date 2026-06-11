@@ -10,6 +10,9 @@ interface NewScheduleServiceRequest{
 class NewScheduleService{
     async execute({ user_id, haircut_id, customer, avatar }: NewScheduleServiceRequest){
       
+
+       
+
         if(customer === '' || haircut_id === ''){
             throw new Error("Error shedule new service")
         }

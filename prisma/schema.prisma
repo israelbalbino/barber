@@ -35,6 +35,7 @@ model User{
   haircuts Haircut[]
   service Service[]
   notifications Notification[]
+  businessHours BusinessHours[]
 }
 
 model Notification {
@@ -48,6 +49,8 @@ model Notification {
   @@map("notification")
   user User @relation(fields: [user_id], references: [id])
 }
+
+
 
 model Subscription{
   id String @id
@@ -88,4 +91,29 @@ model Service{
   haircut_id String
   user User @relation(fields: [user_id], references: [id])
   user_id String
+}
+
+
+model BusinessHours {
+  id String @id @default(uuid())
+
+  user_id String
+
+  day Int
+
+  open_time String
+  lunch_start String?
+  lunch_end String?
+  close_time String
+
+  is_open Boolean @default(true)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("business_hours")
+
+  @@unique([user_id, day])
 }
